@@ -79,7 +79,7 @@ class Hypoteka:
     return self.mozna_vyska_uveru, self.bezna_splatka
     
 # Ziadatel(self, prijem, prijem_spoluziadatela, splatky, zostatok_uverov, pocet_deti)
-ziadatel = Ziadatel(1200, 640, 0, 0, 4)
+ziadatel = Ziadatel(1000, 0, 0, 0, 1)
 print(ziadatel)
 
 # Hypoteka(self, doba_splatnosti_v_rokoch, urokova_sadzba)

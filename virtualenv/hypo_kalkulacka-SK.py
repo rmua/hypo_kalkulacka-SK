@@ -6,32 +6,50 @@ Autor: Marcel Ruzicka, ruzicka_marcel@yahoo.com
 
 from numpy_financial import pmt
 
+#while prijem is False:
+prijem = round(float(input("Aký je čistý mesačný príjem žiadateľa? \nPríjem: ")), 2)
+#  if ValueError:
+#    print("Skúste \".\" miesto \",\"")
+
+
 class Ziadatel:
   zivotne_minimum_ziadatela = 210.20
   zivotne_minimum_spoluziadatela = 146.64
   zivotne_minimum_na_dieta = 95.96
   povinna_rezerva = 40
   
-  def __init__(self, prijem, prijem_spoluziadatela=None, splatky=0, zostatok_uverov=0, pocet_deti=None):
+  def __init__(self, prijem):
     self.celkovy_prijem = prijem
     self.spoluziadatel = False
-    self.prijem_spoluziadatela = prijem_spoluziadatela
-    self.splatky = splatky
-    self.zostatok_uverov = zostatok_uverov
-    self.pocet_deti = pocet_deti
-    if prijem_spoluziadatela > 0:
+    try:
+      self.prijem_spoluziadatela = round(float(input("Ak má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")), 2)
+    except ValueError:
+      print("Skúste \".\" miesto \",\"")
+    try:
+      self.zostatok_uverov = round(float(input("Má žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")), 2)
+    except ValueError:
+      print("Skúste \".\" miesto \",\"")
+    if self.zostatok_uverov > 0:
+      try:
+        self.splatky = round(float(input("Aká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")), 2)
+      except ValueError:
+        print("Skúste \".\" miesto \",\"")
+    else:
+      self.splatky = 0
+    self.pocet_deti = int(input("Počet nezaopatrených detí: "))
+    if self.prijem_spoluziadatela > 0:
       self.spoluziadatel = True
-      self.celkovy_prijem = prijem + prijem_spoluziadatela
+      self.celkovy_prijem += self.prijem_spoluziadatela
       
   def __repr__(self):
     if self.spoluziadatel == False and self.pocet_deti == None:
-      return "Bez spoluziadatela \nPrijem: {} EUR \nExistujuce splatky: {} EUR/m \nZostatok uverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "Bez spolužiadateľa \nPríjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
     elif self.spoluziadatel == True and self.pocet_deti == None:
-      return "Spoluziadatel - Ano \nCelkovy prijem: {} EUR \nExistujuce splatky: {} EUR/m \nZostatok uverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "Spolužiadateľ - Áno \nCelkový príjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
     elif self.spoluziadatel == False and self.pocet_deti != None:
-      return "Bez spoluziadatela \nPrijem {} EUR \nPocet nezaopatrenych deti: {} \nExistujuce splatky: {} EUR/m \nZostatok uverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "Bez spolužiadateľa \nPríjem {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
     else:
-      return "Spoluziadatel - Ano \nCelkovy prijem: {} EUR \nPocet nezaopatrenych deti: {} \nExistujuce splatky: {} EUR/m \nZostatok uverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "Spolužiadateľ - Áno \nCelkový príjem: {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
     
   def zivotne_minimum_spolu(self):
     self.zivotne_minimum = self.zivotne_minimum_ziadatela
@@ -51,13 +69,13 @@ class Ziadatel:
     
 class Hypoteka:
   def __init__(self, doba_splatnosti_v_rokoch, urokova_sadzba):
-    self.doba_splatnosti_v_rokoch = doba_splatnosti_v_rokoch
-    self.urokova_sadzba = urokova_sadzba
+    self.doba_splatnosti_v_rokoch = round(float(input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")), 1)
+    self.urokova_sadzba = round(float(input("Akú úrokovú sadzbu ponúka banka? \nÚrok: ")), 2)
     self.mozna_vyska_uveru = 10000
     self.vypocet()
     
   def __repr__(self):
-    return "Mozna vyska uveru: {} EUR \nUrokova sadzba: {} %\nSplatka: {:6.2f} EUR/m \nSplatnost: {} rokov \n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
+    return "Možná výška úveru: {} EUR \nÚroková sadzba: {} %\nSplátka: {:6.2f} EUR/m \nSplatnosť: {} rokov \n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
     
   def vypocet(self):
     self.dsti_splatka = ziadatel.dsti()
@@ -78,8 +96,8 @@ class Hypoteka:
         break   
     return self.mozna_vyska_uveru, self.bezna_splatka
     
-# Ziadatel(self, prijem, prijem_spoluziadatela, splatky, zostatok_uverov, pocet_deti)
-ziadatel = Ziadatel(1200, 640, 0, 0, 4)
+
+ziadatel = Ziadatel(prijem)
 print(ziadatel)
 
 # Hypoteka(self, doba_splatnosti_v_rokoch, urokova_sadzba)
