@@ -4,7 +4,7 @@ Vypocita maximalnu moznu vysku hypotekarneho uveru na zaklade prijmu ziadatelov,
 Autor: Marcel Ruzicka, ruzicka_marcel@yahoo.com
 """
 
-from numpy import pmt
+from numpy_financial import pmt
 
 class Ziadatel:
   zivotne_minimum_ziadatela = 210.20
