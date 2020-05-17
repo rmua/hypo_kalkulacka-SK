@@ -6,11 +6,6 @@ Autor: Marcel Ruzicka, ruzicka_marcel@yahoo.com
 
 from numpy_financial import pmt
 
-#while prijem is False:
-prijem = round(float(input("Aký je čistý mesačný príjem žiadateľa? \nPríjem: ")), 2)
-#  if ValueError:
-#    print("Skúste \".\" miesto \",\"")
-
 
 class Ziadatel:
   zivotne_minimum_ziadatela = 210.20
@@ -18,38 +13,29 @@ class Ziadatel:
   zivotne_minimum_na_dieta = 95.96
   povinna_rezerva = 40
   
-  def __init__(self, prijem):
-    self.celkovy_prijem = prijem
+  def __init__(self):
+    self.celkovy_prijem = round(float(input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")), 2)
     self.spoluziadatel = False
-    try:
-      self.prijem_spoluziadatela = round(float(input("Ak má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")), 2)
-    except ValueError:
-      print("Skúste \".\" miesto \",\"")
-    try:
-      self.zostatok_uverov = round(float(input("Má žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")), 2)
-    except ValueError:
-      print("Skúste \".\" miesto \",\"")
+    self.prijem_spoluziadatela = round(float(input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")), 2)
+    self.zostatok_uverov = round(float(input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")), 2)
     if self.zostatok_uverov > 0:
-      try:
-        self.splatky = round(float(input("Aká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")), 2)
-      except ValueError:
-        print("Skúste \".\" miesto \",\"")
+      self.splatky = round(float(input("\nAká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")), 2)
     else:
       self.splatky = 0
-    self.pocet_deti = int(input("Počet nezaopatrených detí: "))
+    self.pocet_deti = int(input("\nPočet nezaopatrených detí: "))
     if self.prijem_spoluziadatela > 0:
       self.spoluziadatel = True
       self.celkovy_prijem += self.prijem_spoluziadatela
       
   def __repr__(self):
     if self.spoluziadatel == False and self.pocet_deti == None:
-      return "Bez spolužiadateľa \nPríjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "\n\nBez spolužiadateľa \nPríjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
     elif self.spoluziadatel == True and self.pocet_deti == None:
-      return "Spolužiadateľ - Áno \nCelkový príjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "\n\nSpolužiadateľ - Áno \nCelkový príjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
     elif self.spoluziadatel == False and self.pocet_deti != None:
-      return "Bez spolužiadateľa \nPríjem {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "\n\nBez spolužiadateľa \nPríjem {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
     else:
-      return "Spolužiadateľ - Áno \nCelkový príjem: {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "\n\nSpolužiadateľ - Áno \nCelkový príjem: {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
     
   def zivotne_minimum_spolu(self):
     self.zivotne_minimum = self.zivotne_minimum_ziadatela
@@ -70,12 +56,12 @@ class Ziadatel:
 class Hypoteka:
   def __init__(self):
     self.doba_splatnosti_v_rokoch = round(float(input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")), 1)
-    self.urokova_sadzba = round(float(input("Akú úrokovú sadzbu ponúka banka? \nÚrok: ")), 2)
+    self.urokova_sadzba = round(float(input("\nAkú úrokovú sadzbu ponúka banka? \nÚrok: ")), 2)
     self.mozna_vyska_uveru = 10000
     self.vypocet()
     
   def __repr__(self):
-    return "Možná výška úveru: {} EUR \nÚroková sadzba: {} %\nSplátka: {:6.2f} EUR/m \nSplatnosť: {} rokov \n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
+    return "\n\nMožná výška úveru: {} EUR \nÚroková sadzba: {} %\nSplátka: {:6.2f} EUR/m \nSplatnosť: {} rokov \n\n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
     
   def vypocet(self):
     self.dsti_splatka = ziadatel.dsti()
@@ -97,24 +83,26 @@ class Hypoteka:
     return self.mozna_vyska_uveru, self.bezna_splatka
     
   def prepocet(self):
-    prepocet = input("Želáte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno): ")
-    while prepocet != "A":
-      print("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku.")
-    if prepocet == "A":
+    prepocet = input("\nŽeláte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno) ")
+    while prepocet != "A" and prepocet != "a":
+      print("\nNeplatný príkaz.")
+      prepocet = input("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku.\n ")
+    if prepocet == "A" or prepocet == "a":
       uver = Hypoteka()
       print(uver)
       self.prepocet()
-    else:
-      None
-    
+      
 
-ziadatel = Ziadatel(prijem)
+ziadatel = Ziadatel()
 print(ziadatel)
-
-# Hypoteka(self, doba_splatnosti_v_rokoch, urokova_sadzba)
 uver = Hypoteka()
 print(uver)
 uver.prepocet()
+  
+if __name__ == "__main__":
+  main()
+  
+
 
 
 
