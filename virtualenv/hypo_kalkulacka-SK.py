@@ -14,13 +14,14 @@ class Ziadatel:
   povinna_rezerva = 40
   
   def __init__(self):
-    self.celkovy_prijem = input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")
-    if "," in self.celkovy_prijem:
-      self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
-      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
-    else: 
-      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
-    
+    self.celkovy_prijem = None
+    while type(self.celkovy_prijem) is not float: # and type(self.celkovy_prijem) is str:
+      self.celkovy_prijem = input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")
+      if "," in self.celkovy_prijem:
+        self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
+        self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+    self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+          
     self.spoluziadatel = False
     
     self.prijem_spoluziadatela = input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")
