@@ -14,18 +14,45 @@ class Ziadatel:
   povinna_rezerva = 40
   
   def __init__(self):
-    self.celkovy_prijem = round(float(input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")), 2)
+    self.celkovy_prijem = input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")
+    if "," in self.celkovy_prijem:
+      self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
+      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+    else: 
+      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+    
     self.spoluziadatel = False
-    self.prijem_spoluziadatela = round(float(input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")), 2)
-    self.zostatok_uverov = round(float(input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")), 2)
+    
+    self.prijem_spoluziadatela = input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")
+    if "," in self.prijem_spoluziadatela:
+      self.prijem_spoluziadatela = self.prijem_spoluziadatela.replace(",", ".")
+      self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
+    else:
+      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+    
+    self.zostatok_uverov = input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")
+    if "," in self.zostatok_uverov:
+      self.zostatok_uverov = self.zostatok_uverov.replace(",", ".")
+      self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+    else:
+      self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+    
     if self.zostatok_uverov > 0:
-      self.splatky = round(float(input("\nAká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")), 2)
+      self.splatky = input("\nAká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")
+      if "," in self.splatky:
+        self.splatky = self.splatky.replace(",", ".")
+        self.splatky = round(float(self.splatky), 2)
+      else:
+        self.splatky = round(float(self.splatky), 2)
     else:
       self.splatky = 0
+      
     self.pocet_deti = int(input("\nPočet nezaopatrených detí: "))
+    
     if self.prijem_spoluziadatela > 0:
       self.spoluziadatel = True
       self.celkovy_prijem += self.prijem_spoluziadatela
+      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
       
   def __repr__(self):
     if self.spoluziadatel == False and self.pocet_deti == None:
@@ -55,8 +82,20 @@ class Ziadatel:
     
 class Hypoteka:
   def __init__(self):
-    self.doba_splatnosti_v_rokoch = round(float(input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")), 1)
-    self.urokova_sadzba = round(float(input("\nAkú úrokovú sadzbu ponúka banka? \nÚrok: ")), 2)
+    self.doba_splatnosti_v_rokoch = input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")
+    if "," in self.doba_splatnosti_v_rokoch:
+      self.doba_splatnosti_v_rokoch = self.doba_splatnosti_v_rokoch.replace(",", ".")
+      self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+    else:
+      self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+    
+    self.urokova_sadzba = input("\nAkú úrokovú sadzbu ponúka banka? \nÚrok: ")
+    if "," in self.urokova_sadzba:
+      self.urokova_sadzba = self.urokova_sadzba.replace(",", ".")
+      self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+    else:
+      self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+    
     self.mozna_vyska_uveru = 10000
     self.vypocet()
     
