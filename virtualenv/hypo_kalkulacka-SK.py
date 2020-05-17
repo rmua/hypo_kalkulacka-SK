@@ -68,7 +68,7 @@ class Ziadatel:
     return self.max_splatka 
     
 class Hypoteka:
-  def __init__(self, doba_splatnosti_v_rokoch, urokova_sadzba):
+  def __init__(self):
     self.doba_splatnosti_v_rokoch = round(float(input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")), 1)
     self.urokova_sadzba = round(float(input("Akú úrokovú sadzbu ponúka banka? \nÚrok: ")), 2)
     self.mozna_vyska_uveru = 10000
@@ -96,13 +96,25 @@ class Hypoteka:
         break   
     return self.mozna_vyska_uveru, self.bezna_splatka
     
+  def prepocet(self):
+    prepocet = input("Želáte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno): ")
+    while prepocet != "A":
+      print("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku.")
+    if prepocet == "A":
+      uver = Hypoteka()
+      print(uver)
+      self.prepocet()
+    else:
+      None
+    
 
 ziadatel = Ziadatel(prijem)
 print(ziadatel)
 
 # Hypoteka(self, doba_splatnosti_v_rokoch, urokova_sadzba)
-uver = Hypoteka(30, 1.5)
+uver = Hypoteka()
 print(uver)
+uver.prepocet()
 
 
 
