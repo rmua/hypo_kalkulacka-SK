@@ -38,7 +38,6 @@ class Ziadatel:
           print("Zadajte platné číslo")
           
     self.spoluziadatel = False
-    
     self.prijem_spoluziadatela = None
     while not self.prijem_spoluziadatela:
       self.prijem_spoluziadatela = input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")
@@ -65,24 +64,65 @@ class Ziadatel:
           self.prijem_spoluziadatela = None
           print("Zadajte platné číslo alebo 0")
     
-    self.zostatok_uverov = input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")
-    if "," in self.zostatok_uverov:
-      self.zostatok_uverov = self.zostatok_uverov.replace(",", ".")
-      self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
-    else:
-      self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+    self.zostatok_uverov = None
+    while not self.zostatok_uverov:
+      self.zostatok_uverov = input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")
+      if self.zostatok_uverov == "0":
+        self.zostatok_uverov = 0
+        break
+      elif "." not in self.zostatok_uverov and "," not in self.zostatok_uverov:
+        try:
+          self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+        except ValueError:
+          self.zostatok_uverov = None
+          print("Zadajte platné číslo alebo 0")
+      elif self.zostatok_uverov.count(".") == 1:
+        try:
+          self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+        except ValueError:
+          self.zostatok_uverov = None
+          print("Zadajte platné číslo alebo 0")
+      elif self.zostatok_uverov.count(",") == 1:
+        try:
+          self.zostatok_uverov = self.zostatok_uverov.replace(",", ".")
+          self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
+        except ValueError:
+          self.zostatok_uverov = None
+          print("Zadajte platné číslo alebo 0")
     
     if self.zostatok_uverov > 0:
-      self.splatky = input("\nAká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")
-      if "," in self.splatky:
-        self.splatky = self.splatky.replace(",", ".")
-        self.splatky = round(float(self.splatky), 2)
-      else:
-        self.splatky = round(float(self.splatky), 2)
+      self.splatky = None
+      while not self.splatky:
+        self.splatky = input("\nAká je mesačná výška splátok existujúcich úverov? \nVýška splátok: ")
+        if "." not in self.splatky and "," not in self.splatky:
+          try:
+            self.splatky = round(float(self.splatky), 2)
+          except ValueError:
+            self.splatky = None
+            print("Zadajte celkovú sumu mesačných splátok úverov")
+        elif self.splatky.count(".") == 1:
+          try:
+            self.splatky = round(float(self.splatky), 2)
+          except ValueError:
+            self.splatky = None
+            print("Zadajte celkovú sumu mesačných splátok úverov")
+        elif self.splatky.count(",") == 1:
+          try:
+            self.splatky = self.splatky.replace(",", ".")
+            self.splatky = round(float(self.splatky), 2)
+          except ValueError:
+            sself.splatky = None
+            print("Zadajte celkovú sumu mesačných splátok úverov")
     else:
       self.splatky = 0
       
-    self.pocet_deti = int(input("\nPočet nezaopatrených detí: "))
+    self.pocet_deti = None
+    while not self.pocet_deti:
+      try:
+        self.pocet_deti = int(input("\nPočet nezaopatrených detí: "))
+      except ValueError:
+        self.pocet_deti = None
+        print("Zadajte počet detí alebo 0")
     
     if self.prijem_spoluziadatela > 0:
       self.spoluziadatel = True
