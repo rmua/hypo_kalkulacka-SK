@@ -15,21 +15,55 @@ class Ziadatel:
   
   def __init__(self):
     self.celkovy_prijem = None
-    while type(self.celkovy_prijem) is not float: # and type(self.celkovy_prijem) is str:
+    while not self.celkovy_prijem:
       self.celkovy_prijem = input("\nAký je čistý mesačný príjem žiadateľa? \nPríjem: ")
-      if "," in self.celkovy_prijem:
-        self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
-        self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
-    self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+      if "." not in self.celkovy_prijem and "," not in self.celkovy_prijem:
+        try:
+          self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+        except ValueError:
+          self.celkovy_prijem = None
+          print("Zadajte platné číslo")
+      elif self.celkovy_prijem.count(".") == 1:
+        try:
+          self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+        except ValueError:
+          self.celkovy_prijem = None
+          print("Zadajte platné číslo")
+      elif self.celkovy_prijem.count(",") == 1:
+        try:
+          self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
+          self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+        except ValueError:
+          self.celkovy_prijem = None
+          print("Zadajte platné číslo")
           
     self.spoluziadatel = False
     
-    self.prijem_spoluziadatela = input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")
-    if "," in self.prijem_spoluziadatela:
-      self.prijem_spoluziadatela = self.prijem_spoluziadatela.replace(",", ".")
-      self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
-    else:
-      self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
+    self.prijem_spoluziadatela = None
+    while not self.prijem_spoluziadatela:
+      self.prijem_spoluziadatela = input("\nAk má žiadateľ spolužiadateľa, zadajte výšku jeho čistého mesačného príjmu. Ak nie, zadajte \"0\". \nPríjem spolužiadateľa: ")
+      if self.prijem_spoluziadatela == "0":
+        self.prijem_spoluziadatela = 0
+        break
+      elif "." not in self.prijem_spoluziadatela and "," not in self.prijem_spoluziadatela:
+        try:
+          self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
+        except ValueError:
+          self.prijem_spoluziadatela = None
+          print("Zadajte platné číslo alebo 0")
+      elif self.prijem_spoluziadatela.count(".") == 1:
+        try:
+          self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
+        except ValueError:
+          self.prijem_spoluziadatela = None
+          print("Zadajte platné číslo alebo 0")
+      elif self.prijem_spoluziadatela.count(",") == 1:
+        try:
+          self.prijem_spoluziadatela = self.prijem_spoluziadatela.replace(",", ".")
+          self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
+        except ValueError:
+          self.prijem_spoluziadatela = None
+          print("Zadajte platné číslo alebo 0")
     
     self.zostatok_uverov = input("\nMá žiadateľ (príp. spolužiadateľ) úver? Ak áno, uveďte zostatok. Inak uveďte \"0\" \nZostatok spolu: ")
     if "," in self.zostatok_uverov:
