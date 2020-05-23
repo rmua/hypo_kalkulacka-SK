@@ -1,7 +1,7 @@
 """
-Hypo_kalkulacka - kalkulacka vysky hypoteky a hypotekarnej splatky
-Vypocita maximalnu moznu vysku hypotekarneho uveru na zaklade prijmu ziadatelov, ich zavazkov, poctu nezaopatrenych deti, na zaklade uroku aky vedia ziskat v banke a na zaklade doby splatnosti. Program vracia vysku hypoteky a mesacnej splatky.
-Autor: Marcel Ruzicka, ruzicka_marcel@yahoo.com
+Hypo_kalkulacka - kalkulačka výšky hypotéky a hypotekárnej splátky.
+Vypočíta maximálnu možnú výšku hypotekárneho úveru na základe príjmu žiadateľov, ich záväzkov, počtu nezaopatrených detí, na základe úroku aký vedia získať v banke a na základe doby splatnosti. Program vracia výšku hypotéky a mesačnej splátky.
+Autor: Marcel Ružička, ruzicka_marcel@yahoo.com
 """
 
 from numpy_financial import pmt
@@ -22,20 +22,20 @@ class Ziadatel:
           self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
         except ValueError:
           self.celkovy_prijem = None
-          print("Zadajte platné číslo")
+          print("CHYBA: Zadajte platné číslo!")
       elif self.celkovy_prijem.count(".") == 1:
         try:
           self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
         except ValueError:
           self.celkovy_prijem = None
-          print("Zadajte platné číslo")
+          print("CHYBA: Zadajte platné číslo!")
       elif self.celkovy_prijem.count(",") == 1:
         try:
           self.celkovy_prijem = self.celkovy_prijem.replace(",", ".")
           self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
         except ValueError:
           self.celkovy_prijem = None
-          print("Zadajte platné číslo")
+          print("CHYBA: Zadajte platné číslo!")
           
     self.spoluziadatel = False
     self.prijem_spoluziadatela = None
@@ -49,20 +49,20 @@ class Ziadatel:
           self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
         except ValueError:
           self.prijem_spoluziadatela = None
-          print("Zadajte platné číslo alebo 0")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
       elif self.prijem_spoluziadatela.count(".") == 1:
         try:
           self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
         except ValueError:
           self.prijem_spoluziadatela = None
-          print("Zadajte platné číslo alebo 0")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
       elif self.prijem_spoluziadatela.count(",") == 1:
         try:
           self.prijem_spoluziadatela = self.prijem_spoluziadatela.replace(",", ".")
           self.prijem_spoluziadatela = round(float(self.prijem_spoluziadatela), 2)
         except ValueError:
           self.prijem_spoluziadatela = None
-          print("Zadajte platné číslo alebo 0")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
     
     self.zostatok_uverov = None
     while not self.zostatok_uverov:
@@ -75,20 +75,20 @@ class Ziadatel:
           self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
         except ValueError:
           self.zostatok_uverov = None
-          print("Zadajte platné číslo alebo 0")
+          print("ZCHYBA: adajte platné číslo alebo \"0\"!")
       elif self.zostatok_uverov.count(".") == 1:
         try:
           self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
         except ValueError:
           self.zostatok_uverov = None
-          print("Zadajte platné číslo alebo 0")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
       elif self.zostatok_uverov.count(",") == 1:
         try:
           self.zostatok_uverov = self.zostatok_uverov.replace(",", ".")
           self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
         except ValueError:
           self.zostatok_uverov = None
-          print("Zadajte platné číslo alebo 0")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
     
     if self.zostatok_uverov > 0:
       self.splatky = None
@@ -99,20 +99,20 @@ class Ziadatel:
             self.splatky = round(float(self.splatky), 2)
           except ValueError:
             self.splatky = None
-            print("Zadajte celkovú sumu mesačných splátok úverov")
+            print("CHYBA: Zadajte celkovú sumu mesačných splátok úverov!")
         elif self.splatky.count(".") == 1:
           try:
             self.splatky = round(float(self.splatky), 2)
           except ValueError:
             self.splatky = None
-            print("Zadajte celkovú sumu mesačných splátok úverov")
+            print("CHYBA: Zadajte celkovú sumu mesačných splátok úverov!")
         elif self.splatky.count(",") == 1:
           try:
             self.splatky = self.splatky.replace(",", ".")
             self.splatky = round(float(self.splatky), 2)
           except ValueError:
             sself.splatky = None
-            print("Zadajte celkovú sumu mesačných splátok úverov")
+            print("CHYBA: Zadajte celkovú sumu mesačných splátok úverov!")
     else:
       self.splatky = 0
       
@@ -120,10 +120,12 @@ class Ziadatel:
     while not self.pocet_deti:
       try:
         self.pocet_deti = int(input("\nPočet nezaopatrených detí: "))
+        if self.pocet_deti == 0:
+          break
       except ValueError:
         self.pocet_deti = None
-        print("Zadajte počet detí alebo 0")
-    
+        print("CHYBA: Zadajte počet detí alebo \"0\"!")
+           
     if self.prijem_spoluziadatela > 0:
       self.spoluziadatel = True
       self.celkovy_prijem += self.prijem_spoluziadatela
@@ -131,51 +133,83 @@ class Ziadatel:
       
   def __repr__(self):
     if self.spoluziadatel == False and self.pocet_deti == None:
-      return "\n\nBez spolužiadateľa \nPríjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "\n\nBEZ SPOLUŽIADATEĽA \nPRÍJEM: {} EUR \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
     elif self.spoluziadatel == True and self.pocet_deti == None:
-      return "\n\nSpolužiadateľ - Áno \nCelkový príjem: {} EUR \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov)
+      return "\n\nSPOLUŽIADATEĽ - Áno \nCELKOVÝ PRÍJEM: {} EUR \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
     elif self.spoluziadatel == False and self.pocet_deti != None:
-      return "\n\nBez spolužiadateľa \nPríjem {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "\n\nBEZ SPOLUŽIADATEĽA \nPRÍJEM: {} EUR \nPOČET NEZAOPATRENÝCH DETÍ: {} \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
     else:
-      return "\n\nSpolužiadateľ - Áno \nCelkový príjem: {} EUR \nPočet nezaopatrených detí: {} \nExistujúce splátky: {} EUR/m \nZostatok úverov: {} EUR \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov)
+      return "\n\nSPOLUŽIADATEĽ - Áno \nCELKOVÝ PRÍJEM: {} EUR \nPOČET NEZAOPATRENÝCH DETÍ: {} \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
     
   def zivotne_minimum_spolu(self):
     self.zivotne_minimum = self.zivotne_minimum_ziadatela
     if self.spoluziadatel == True:
       self.zivotne_minimum += self.zivotne_minimum_spoluziadatela
-    if self.pocet_deti != None:
+    if self.pocet_deti:
       self.zivotne_minimum += (self.pocet_deti * self.zivotne_minimum_na_dieta)
-    return self.zivotne_minimum
+    return round(float(self.zivotne_minimum), 2)
 
   def dti(self):
     self.max_vyska_uveru_podla_dti = (self.celkovy_prijem * 12 * 8) - self.zostatok_uverov
-    return self.max_vyska_uveru_podla_dti
+    return round(float(self.max_vyska_uveru_podla_dti), 2)
   
   def dsti(self):
     self.max_splatka = (self.celkovy_prijem - self.zivotne_minimum_spolu()) * (float(100 - self.povinna_rezerva) / 100) - self.splatky
-    return self.max_splatka 
+    return round(float(self.max_splatka), 2) 
     
 class Hypoteka:
   def __init__(self):
-    self.doba_splatnosti_v_rokoch = input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")
-    if "," in self.doba_splatnosti_v_rokoch:
-      self.doba_splatnosti_v_rokoch = self.doba_splatnosti_v_rokoch.replace(",", ".")
-      self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
-    else:
-      self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+    self.doba_splatnosti_v_rokoch = None
+    while not self.doba_splatnosti_v_rokoch:
+      self.doba_splatnosti_v_rokoch = input("Akú dobu splatnosti chcete zvoliť? \nPočet rokov: ")
+      if "." not in self.doba_splatnosti_v_rokoch and "," not in self.doba_splatnosti_v_rokoch:
+        try:
+          self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+        except ValueError:
+          self.doba_splatnosti_v_rokoch = None
+          print("CHYBA: Zadajte požadovanú dobu splatnosti!")
+      elif self.doba_splatnosti_v_rokoch.count(".") == 1:
+        try:
+          self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+        except ValueError:
+          self.doba_splatnosti_v_rokoch = None
+          print("CHYBA: Zadajte požadovanú dobu splatnosti!")
+      elif self.doba_splatnosti_v_rokoch.count(",") == 1:
+        try:
+          self.doba_splatnosti_v_rokoch = self.doba_splatnosti_v_rokoch.replace(",", ".")
+          self.doba_splatnosti_v_rokoch = round(float(self.doba_splatnosti_v_rokoch), 1)
+        except ValueError:
+          self.doba_splatnosti_v_rokoch = None
+          print("CHYBA: Zadajte požadovanú dobu splatnosti!")
     
-    self.urokova_sadzba = input("\nAkú úrokovú sadzbu ponúka banka? \nÚrok: ")
-    if "," in self.urokova_sadzba:
-      self.urokova_sadzba = self.urokova_sadzba.replace(",", ".")
-      self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
-    else:
-      self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+    self.urokova_sadzba = None
+    while not self.urokova_sadzba:
+      self.urokova_sadzba = input("\nAkú úrokovú sadzbu ponúka banka? \nÚrok: ")
+      if "." not in self.urokova_sadzba and "," not in self.urokova_sadzba:
+        try:
+          self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+        except ValueError:
+          self.urokova_sadzba = None
+          print("CHYBA: Zadajte úrokovú sadzbu!")
+      elif self.urokova_sadzba.count(".") == 1:
+        try:
+          self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+        except ValueError:
+          self.urokova_sadzba = None
+          print("CHYBA: Zadajte úrokovú sadzbu!")
+      elif self.urokova_sadzba.count(",") == 1:
+        try:
+          self.urokova_sadzba = self.urokova_sadzba.replace(",", ".")
+          self.urokova_sadzba = round(float(self.urokova_sadzba), 2)
+        except ValueError:
+          self.urokova_sadzba = None
+          print("CHYBA: Zadajte úrokovú sadzbu!")
     
     self.mozna_vyska_uveru = 10000
     self.vypocet()
     
   def __repr__(self):
-    return "\n\nMožná výška úveru: {} EUR \nÚroková sadzba: {} %\nSplátka: {:6.2f} EUR/m \nSplatnosť: {} rokov \n\n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
+    return "\n\nMOŽNÁ VÝŠKA ÚVERU: {} EUR \nÚROKOVÁ SADZBA: {} %\nSPLÁTKA: {:6.2f} EUR/m \nSPLATNOSŤ: {} rokov \n\n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
     
   def vypocet(self):
     self.dsti_splatka = ziadatel.dsti()
@@ -199,7 +233,7 @@ class Hypoteka:
   def prepocet(self):
     prepocet = input("\nŽeláte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno) ")
     while prepocet != "A" and prepocet != "a":
-      print("\nNeplatný príkaz.")
+      print("\nNeplatný príkaz!")
       prepocet = input("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku.\n ")
     if prepocet == "A" or prepocet == "a":
       uver = Hypoteka()
