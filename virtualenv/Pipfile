@@ -8,6 +8,8 @@ verify_ssl = true
 [packages]
 numpy-financial = "*"
 pyinstaller = "*"
+setuptools = "<45.0.0"
+reader = "*"
 
 [requires]
 python_version = "3.8"
