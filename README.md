@@ -1,4 +1,4 @@
-# hypo_kalkulacka-SK
+# hypoco
 Kalkulačka, ktorá vypočíta maximálnu možnú výšku hypotekárneho úveru a jeho mesačnú splátku.
 
 class Ziadatel berie vstupy: 
