@@ -8,11 +8,17 @@ from numpy_financial import pmt
 
 
 class Ziadatel:
+
+  # Pevne premenne. Stanovuje zakon:
+
   zivotne_minimum_ziadatela = 210.20
   zivotne_minimum_spoluziadatela = 146.64
   zivotne_minimum_na_dieta = 95.96
   povinna_rezerva = 40
   
+
+  # Vstupy o ziadateloch a zavazkoch:
+
   def __init__(self):
     self.celkovy_prijem = None
     while not self.celkovy_prijem:
@@ -131,6 +137,9 @@ class Ziadatel:
       self.celkovy_prijem += self.prijem_spoluziadatela
       self.celkovy_prijem = round(float(self.celkovy_prijem), 2)
       
+  
+  # Suhrn o ziadateloch:
+
   def __repr__(self):
     if self.spoluziadatel == False and self.pocet_deti == None:
       return "\n\nBEZ SPOLUŽIADATEĽA \nPRÍJEM: {} EUR \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
@@ -141,6 +150,9 @@ class Ziadatel:
     else:
       return "\n\nSPOLUŽIADATEĽ - Áno \nCELKOVÝ PRÍJEM: {} EUR \nPOČET NEZAOPATRENÝCH DETÍ: {} \nEXISTUJÚCE SPLÁTKY: {} EUR/m \nZOSTATOK ÚVEROV: {} EUR \nŽIVOTNÉ MINIMUM: {} EUR/m \n\n".format(self.celkovy_prijem, self.pocet_deti, self.splatky, self.zostatok_uverov, self.zivotne_minimum_spolu())
     
+  
+  # Vypocet zivotneho minima:
+
   def zivotne_minimum_spolu(self):
     self.zivotne_minimum = self.zivotne_minimum_ziadatela
     if self.spoluziadatel == True:
@@ -149,15 +161,24 @@ class Ziadatel:
       self.zivotne_minimum += (self.pocet_deti * self.zivotne_minimum_na_dieta)
     return round(float(self.zivotne_minimum), 2)
 
+  
+  # Vypocet DTI parametra:
+
   def dti(self):
     self.max_vyska_uveru_podla_dti = (self.celkovy_prijem * 12 * 8) - self.zostatok_uverov
     return round(float(self.max_vyska_uveru_podla_dti), 2)
   
+  
+  # Vypocet DSTI parametra:
+
   def dsti(self):
     self.max_splatka = (self.celkovy_prijem - self.zivotne_minimum_spolu()) * (float(100 - self.povinna_rezerva) / 100) - self.splatky
     return round(float(self.max_splatka), 2) 
     
 class Hypoteka:
+
+  # Zadanie parametrov pozadovanej hypoteky:
+
   def __init__(self):
     self.doba_splatnosti_v_rokoch = None
     while not self.doba_splatnosti_v_rokoch:
@@ -205,12 +226,21 @@ class Hypoteka:
           self.urokova_sadzba = None
           print("CHYBA: Zadajte úrokovú sadzbu!")
     
+    
+    # Default parameter, od ktoreho zacne prepocet moznej zhodnej ponuky hypoteky:
     self.mozna_vyska_uveru = 10000
+    # Vyvolanie vypoctu:
     self.vypocet()
-    
+   
+
+  # Vysledok vypoctu:
+
   def __repr__(self):
-    return "\n\nMOŽNÁ VÝŠKA ÚVERU: {} EUR \nÚROKOVÁ SADZBA: {} %\nSPLÁTKA: {:6.2f} EUR/m \nSPLATNOSŤ: {} rokov \n\n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)
-    
+    return "\n\nMOŽNÁ VÝŠKA ÚVERU: {} EUR \nÚROKOVÁ SADZBA: {} %\nSPLÁTKA: {:6.2f} EUR/m \nSPLATNOSŤ: {} rokov \n\n".format(self.mozna_vyska_uveru, self.urokova_sadzba, self.bezna_splatka, self.doba_splatnosti_v_rokoch)  
+
+
+  # Metoda vypoctu:
+
   def vypocet(self):
     self.dsti_splatka = ziadatel.dsti()
     self.dti_vyska_uveru = ziadatel.dti()
@@ -229,7 +259,10 @@ class Hypoteka:
       if self.dti_vyska_uveru <= self.mozna_vyska_uveru:
         break   
     return self.mozna_vyska_uveru, self.bezna_splatka
-    
+   
+
+  # Metoda pre opakovanie vypoctu:
+
   def prepocet(self):
     prepocet = input("\nŽeláte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno) ")
     while prepocet != "A" and prepocet != "a":
