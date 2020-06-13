@@ -264,14 +264,17 @@ class Hypoteka:
   # Metoda pre opakovanie vypoctu:
 
   def prepocet(self):
-    prepocet = input("\nŽeláte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno) ")
-    while prepocet != "A" and prepocet != "a":
+    prepocet = input("\nŽeláte si prepočítať hypotéku s iným úrokom alebo s inou dobou splatnosti? \n A (Áno) / N (Nie) \n")
+    while prepocet != "A" and prepocet != "a" and prepocet != "N" and prepocet != "n":
       print("\nNeplatný príkaz!")
-      prepocet = input("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku.\n ")
+      prepocet = input("Zadajte \"A\", ak chcete prepočítať hypotekárnu ponuku, alebo \"N\", ak si želáte skončiť.\n ")
     if prepocet == "A" or prepocet == "a":
       uver = Hypoteka()
       print(uver)
       self.prepocet()
+    if prepocet == "N" or prepocet == "n":
+      print("\nĎakujeme, že používate HYPOCO!\n")
+    return
       
 
 ziadatel = Ziadatel()
@@ -280,8 +283,7 @@ uver = Hypoteka()
 print(uver)
 uver.prepocet()
   
-if __name__ == "__main__":
-  main()
+
   
 
 
