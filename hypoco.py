@@ -81,7 +81,7 @@ class Ziadatel:
           self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
         except ValueError:
           self.zostatok_uverov = None
-          print("ZCHYBA: adajte platné číslo alebo \"0\"!")
+          print("CHYBA: Zadajte platné číslo alebo \"0\"!")
       elif self.zostatok_uverov.count(".") == 1:
         try:
           self.zostatok_uverov = round(float(self.zostatok_uverov), 2)
